@@ -4,6 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node.js >= 18](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org)
 [![MCP](https://img.shields.io/badge/MCP-server-blue.svg)](https://modelcontextprotocol.io)
+[![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/MauricioPerera/subway-mcp-server/master/badges/coverage.json)](https://github.com/MauricioPerera/subway-mcp-server/actions/workflows/ci.yml)
 
 MCP server local que expone `codex`, `claude` (Claude Code) y `agy` (Antigravity) como tools de delegación, para que un agente orquestador les reparta tareas vía CLI en modo no interactivo.
 
@@ -39,6 +40,8 @@ npm test
 ```
 
 Cubre `cliRunner` (spawn, captura de stdout/stderr, cwd, timeout, comando inexistente) y la construcción de argumentos/parseo de salida de cada tool (`argBuilders`), sin invocar los CLIs reales de pago.
+
+Cobertura local: `npm run coverage`. En CI, el job `coverage` la calcula en cada push a `master` y commitea `badges/coverage.json` (leído por el badge del README vía shields.io endpoint) — `delegate.ts` e `index.ts` quedan en 0% porque solo se ejercitan invocando los CLIs reales, fuera del alcance de estos tests.
 
 ## Registrar en Claude Code
 
