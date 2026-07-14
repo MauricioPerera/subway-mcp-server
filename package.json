@@ -2,6 +2,7 @@
   "name": "subway-mcp-server",
   "version": "1.0.0",
   "description": "Local MCP server that delegates tasks to codex, claude, and agy CLI sub-agents.",
+  "license": "MIT",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {

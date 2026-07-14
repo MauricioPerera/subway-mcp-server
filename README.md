@@ -1,5 +1,9 @@
 # subway-mcp-server
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Node.js >= 18](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org)
+[![MCP](https://img.shields.io/badge/MCP-server-blue.svg)](https://modelcontextprotocol.io)
+
 MCP server local que expone `codex`, `claude` (Claude Code) y `agy` (Antigravity) como tools de delegación, para que un agente orquestador les reparta tareas vía CLI en modo no interactivo.
 
 ## Tools
