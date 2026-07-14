@@ -1,5 +1,6 @@
 # subway-mcp-server
 
+[![CI](https://github.com/MauricioPerera/subway-mcp-server/actions/workflows/ci.yml/badge.svg)](https://github.com/MauricioPerera/subway-mcp-server/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Node.js >= 18](https://img.shields.io/badge/node-%3E%3D18-brightgreen.svg)](https://nodejs.org)
 [![MCP](https://img.shields.io/badge/MCP-server-blue.svg)](https://modelcontextprotocol.io)
