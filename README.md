@@ -31,6 +31,14 @@ npm install
 npm run build
 ```
 
+## Tests
+
+```
+npm test
+```
+
+Cubre `cliRunner` (spawn, captura de stdout/stderr, cwd, timeout, comando inexistente) y la construcción de argumentos/parseo de salida de cada tool (`argBuilders`), sin invocar los CLIs reales de pago.
+
 ## Registrar en Claude Code
 
 ```

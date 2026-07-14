@@ -7,6 +7,7 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { runCli } from "../services/cliRunner.js";
 import { DelegateInputSchema, type DelegateInput } from "../schemas/delegate.js";
 import { truncate } from "../constants.js";
+import { buildCodexArgs, buildClaudeArgs, buildAgyArgs, parseClaudeStdout } from "./argBuilders.js";
 
 const DelegateOutputSchema = {
   success: z.boolean().describe("True if the sub-agent process exited with code 0 and did not time out."),
@@ -40,10 +41,7 @@ function toToolResponse(result: DelegateResult) {
 
 async function runCodex(params: DelegateInput): Promise<DelegateResult> {
   const tmpFile = join(tmpdir(), `codex-last-${randomUUID()}.txt`);
-  const args = ["exec", "--skip-git-repo-check", "-o", tmpFile];
-  if (params.auto_approve) args.push("--dangerously-bypass-approvals-and-sandbox");
-  if (params.model) args.push("-m", params.model);
-  args.push(params.prompt);
+  const args = buildCodexArgs(params, tmpFile);
 
   const result = await runCli("codex", args, {
     cwd: params.cwd,
@@ -69,25 +67,14 @@ async function runCodex(params: DelegateInput): Promise<DelegateResult> {
 }
 
 async function runClaude(params: DelegateInput): Promise<DelegateResult> {
-  const args = ["-p", "--output-format", "json"];
-  if (params.auto_approve) args.push("--dangerously-skip-permissions");
-  if (params.model) args.push("--model", params.model);
-  args.push(params.prompt);
+  const args = buildClaudeArgs(params);
 
   const result = await runCli("claude", args, {
     cwd: params.cwd,
     timeoutMs: params.timeout_seconds * 1000
   });
 
-  let finalMessage = result.stdout.trim();
-  try {
-    const parsed = JSON.parse(result.stdout);
-    if (typeof parsed.result === "string") {
-      finalMessage = parsed.result;
-    }
-  } catch {
-    // stdout wasn't valid JSON (e.g. spawn failure) - fall back to raw stdout
-  }
+  const finalMessage = parseClaudeStdout(result.stdout) ?? result.stdout.trim();
 
   return {
     success: result.exitCode === 0 && !result.timedOut,
@@ -99,9 +86,7 @@ async function runClaude(params: DelegateInput): Promise<DelegateResult> {
 }
 
 async function runAgy(params: DelegateInput): Promise<DelegateResult> {
-  const args = ["-p", params.prompt];
-  if (params.auto_approve) args.push("--dangerously-skip-permissions");
-  if (params.model) args.push("--model", params.model);
+  const args = buildAgyArgs(params);
 
   const result = await runCli("agy", args, {
     cwd: params.cwd,
